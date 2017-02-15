@@ -161,6 +161,7 @@ public class RNSoundModule extends ReactContextBaseJavaModule {
   public Map<String, Object> getConstants() {
     final Map<String, Object> constants = new HashMap<>();
     constants.put("IsAndroid", true);
+    constants.put("SupportsVariablePlaybackSpeeds", false);
     return constants;
   }
 }

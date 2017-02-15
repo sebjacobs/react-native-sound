@@ -56,6 +56,7 @@ RCT_EXPORT_MODULE();
 
 -(NSDictionary *)constantsToExport {
   return @{@"IsAndroid": [NSNumber numberWithBool:NO],
+           @"SupportsVariablePlaybackSpeeds": [NSNumber numberWithBool:YES],
            @"MainBundlePath": [[NSBundle mainBundle] bundlePath],
            @"NSDocumentDirectory": [self getDirectory:NSDocumentDirectory],
            @"NSLibraryDirectory": [self getDirectory:NSLibraryDirectory],
