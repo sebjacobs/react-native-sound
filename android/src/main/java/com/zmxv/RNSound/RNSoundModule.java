@@ -3,7 +3,9 @@ package com.zmxv.RNSound;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
+import android.media.PlaybackParams;
 import android.net.Uri;
+import android.os.Build;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -127,6 +129,18 @@ public class RNSoundModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void setSpeed(final Integer key, final Float speed) {
+    MediaPlayer player = this.playerPool.get(key);
+    if (player != null) {
+      if(supportsVariablePlaybackSpeeds()) {
+        PlaybackParams playbackParams = new PlaybackParams();
+        playbackParams.setSpeed(speed);
+        player.setPlaybackParams(playbackParams);
+      }
+    }
+  }
+
+  @ReactMethod
   public void setLooping(final Integer key, final Boolean looping) {
     MediaPlayer player = this.playerPool.get(key);
     if (player != null) {
@@ -157,11 +171,23 @@ public class RNSoundModule extends ReactContextBaseJavaModule {
     // no op
   }
 
+  private Boolean supportsVariablePlaybackSpeeds() {
+    if(Build.VERSION.SDK_INT >= 23){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @Override
   public Map<String, Object> getConstants() {
     final Map<String, Object> constants = new HashMap<>();
     constants.put("IsAndroid", true);
-    constants.put("SupportsVariablePlaybackSpeeds", false);
+    if(supportsVariablePlaybackSpeeds()) {
+      constants.put("SupportsVariablePlaybackSpeeds", true);
+    } else {
+      constants.put("SupportsVariablePlaybackSpeeds", false);
+    }
     return constants;
   }
 }
