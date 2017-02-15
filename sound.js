@@ -2,6 +2,7 @@
 
 var RNSound = require('react-native').NativeModules.RNSound;
 var IsAndroid = RNSound.IsAndroid;
+var SupportsVariablePlaybackSpeeds = RNSound.SupportsVariablePlaybackSpeeds;
 var resolveAssetSource = require("react-native/Libraries/Image/resolveAssetSource");
 var nextKey = 0;
 
@@ -132,7 +133,7 @@ Sound.prototype.setNumberOfLoops = function(value) {
 Sound.prototype.setSpeed = function(value) {
   this._setSpeed = value;
   if (this._loaded) {
-    if (!IsAndroid) {
+    if (SupportsVariablePlaybackSpeeds) {
       RNSound.setSpeed(this._key, value);
     }
   }
